@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DocTruyen.ai — Nghe truyện bằng giọng đọc AI trên Chrome</title>
-  <meta name="description" content="DocTruyen.ai là tiện ích Chrome đọc truyện chữ tiếng Việt thành giọng nói AI, tự động chuyển chương, hoạt động trên mọi trang truyện. Miễn phí, nâng cấp Pro $6.99/tháng.">
-  <meta property="og:title" content="DocTruyen.ai — Nghe truyện bằng giọng đọc AI">
-  <meta property="og:description" content="Tiện ích Chrome đọc truyện tiếng Việt bằng giọng AI Google Neural2, tự động chuyển chương, dùng được trên mọi trang truyện.">
+  <title>DocTruyen.ai — Listen to Vietnamese web novels with an AI voice</title>
+  <meta name="description" content="DocTruyen.ai is a Chrome extension that reads Vietnamese web novels aloud with a natural AI voice and auto-advances chapters on any story site. Free, with Pro from $6.99/month.">
+  <meta property="og:title" content="DocTruyen.ai — Listen to Vietnamese web novels with an AI voice">
+  <meta property="og:description" content="Chrome extension that reads Vietnamese stories aloud with Google Neural2 AI voices and auto-advances chapters on any story site.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vietphamqq.github.io/doctruyen/">
   <meta property="og:image" content="https://vietphamqq.github.io/doctruyen/icon128.png">
@@ -23,24 +23,30 @@
     a { color: var(--green); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
-    .en { color: #888; font-size: 14px; font-style: italic; }
+
+    /* Language switching: both versions are in the markup, CSS shows one */
+    html[data-lang="en"] .vi { display: none !important; }
+    html[data-lang="vi"] .en { display: none !important; }
 
     /* Nav */
     nav { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 10; }
-    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; }
-    .brand { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 700; font-size: 18px; }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 700; font-size: 18px; white-space: nowrap; }
     .brand img { width: 30px; height: 30px; }
     nav ul { display: flex; gap: 22px; list-style: none; }
     nav ul a { color: rgba(255,255,255,.8); font-size: 14px; }
     nav ul a:hover { color: #fff; text-decoration: none; }
-    @media (max-width: 640px) { nav ul { display: none; } }
+    .lang { display: flex; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .lang button { background: none; border: 0; color: rgba(255,255,255,.75); font: inherit; font-size: 12px; font-weight: 700;
+                   letter-spacing: .5px; padding: 5px 10px; cursor: pointer; }
+    .lang button.on { background: var(--green); color: #fff; }
+    @media (max-width: 720px) { nav ul { display: none; } }
 
     /* Hero */
     .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%); color: #fff; padding: 72px 0 64px; text-align: center; }
     .hero h1 { font-size: 40px; line-height: 1.2; font-weight: 800; margin-bottom: 14px; }
-    .hero h1 span { color: #43e97b; }
-    .hero p.lead { font-size: 19px; opacity: .85; max-width: 640px; margin: 0 auto 10px; }
-    .hero p.en { color: rgba(255,255,255,.55); margin-bottom: 30px; }
+    .hero h1 span.hl { color: #43e97b; }
+    .hero p.lead { font-size: 19px; opacity: .85; max-width: 660px; margin: 0 auto 30px; }
     .btn { display: inline-block; padding: 13px 26px; border-radius: 10px; font-weight: 700; font-size: 16px; }
     .btn.primary { background: var(--green); color: #fff; }
     .btn.primary:hover { background: var(--green2); text-decoration: none; }
@@ -53,7 +59,7 @@
     section { padding: 64px 0; }
     section.alt { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     h2 { font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
-    .sec-en { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
+    .sec-sub { color: var(--muted); font-size: 15px; margin-bottom: 30px; }
 
     .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
     .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
@@ -73,9 +79,8 @@
     /* Demo */
     .video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: var(--navy); border-radius: 14px; overflow: hidden;
              box-shadow: 0 10px 40px rgba(0,0,0,.18); }
-    .video iframe, .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .video .placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-                          color: rgba(255,255,255,.7); font-size: 15px; }
+    .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .caption { color: var(--muted); font-size: 14px; margin-top: 12px; }
     .shot { margin-top: 26px; border-radius: 14px; border: 1px solid var(--line); width: 100%; display: block;
             box-shadow: 0 6px 24px rgba(0,0,0,.08); }
 
@@ -115,49 +120,82 @@
   <div class="wrap">
     <a class="brand" href="#"><img src="icon128.png" alt=""> DocTruyen.ai</a>
     <ul>
-      <li><a href="#features">Tính năng</a></li>
+      <li><a href="#features"><span class="en">Features</span><span class="vi">Tính năng</span></a></li>
       <li><a href="#demo">Demo</a></li>
-      <li><a href="#pricing">Bảng giá</a></li>
+      <li><a href="#pricing"><span class="en">Pricing</span><span class="vi">Bảng giá</span></a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://vietphamqq.github.io/doctruyen-pp/">Quyền riêng tư</a></li>
+      <li><a href="https://vietphamqq.github.io/doctruyen-pp/"><span class="en">Privacy</span><span class="vi">Quyền riêng tư</span></a></li>
     </ul>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" class="on">EN</button>
+      <button type="button" data-set-lang="vi">VI</button>
+    </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <h1>Nghe truyện thay vì đọc,<br>bằng giọng đọc <span>AI</span></h1>
-    <p class="lead">DocTruyen.ai là tiện ích Chrome biến mọi chương truyện chữ tiếng Việt thành giọng đọc tự nhiên, tự động chuyển sang chương tiếp theo — bạn chỉ việc nghe.</p>
-    <p class="en">A Chrome extension that reads Vietnamese web novels aloud with a natural AI voice and auto-advances chapters, on any story site.</p>
-    <a class="btn primary" id="installBtn" href="#install">Cài đặt cho Chrome — miễn phí</a>
-    <a class="btn ghost" href="#demo">Xem demo</a>
-    <div class="sub">Không cần tài khoản · Hoạt động trên truyenfull, truyencom, storya và hầu hết trang truyện khác</div>
+    <h1>
+      <span class="en">Listen to your stories,<br>read by an <span class="hl">AI voice</span></span>
+      <span class="vi">Nghe truyện thay vì đọc,<br>bằng giọng đọc <span class="hl">AI</span></span>
+    </h1>
+    <p class="lead">
+      <span class="en">DocTruyen.ai is a Chrome extension that turns any Vietnamese web-novel chapter into natural speech and automatically moves on to the next chapter. You just listen.</span>
+      <span class="vi">DocTruyen.ai là tiện ích Chrome biến mọi chương truyện chữ tiếng Việt thành giọng đọc tự nhiên, tự động chuyển sang chương tiếp theo — bạn chỉ việc nghe.</span>
+    </p>
+    <a class="btn primary" href="#install"><span class="en">Add to Chrome — free</span><span class="vi">Cài đặt cho Chrome — miễn phí</span></a>
+    <a class="btn ghost" href="#demo"><span class="en">Watch the demo</span><span class="vi">Xem demo</span></a>
+    <div class="sub">
+      <span class="en">No account needed · Works on truyenfull, truyencom, storya and most other story sites</span>
+      <span class="vi">Không cần tài khoản · Hoạt động trên truyenfull, truyencom, storya và hầu hết trang truyện khác</span>
+    </div>
   </div>
 </header>
 
 <section id="how">
   <div class="wrap">
-    <h2>Dùng thế nào?</h2>
-    <p class="sec-en">How it works</p>
+    <h2><span class="en">How it works</span><span class="vi">Dùng thế nào?</span></h2>
+    <p class="sec-sub"><span class="en">Three steps, no setup.</span><span class="vi">Ba bước, không cần cấu hình.</span></p>
     <div class="steps">
-      <div class="step"><h3>Cài tiện ích</h3><p>Thêm DocTruyen.ai vào Chrome. Không cần đăng ký, không cần cấu hình.</p></div>
-      <div class="step"><h3>Mở một chương truyện</h3><p>Vào bất kỳ trang truyện nào bạn đang đọc. Thanh điều khiển nhỏ tự hiện ở góc màn hình.</p></div>
-      <div class="step"><h3>Bấm ▶ và nghe</h3><p>Giọng AI đọc từ đầu chương. Hết chương, tiện ích tự mở chương kế tiếp và đọc tiếp.</p></div>
+      <div class="step">
+        <h3><span class="en">Install the extension</span><span class="vi">Cài tiện ích</span></h3>
+        <p><span class="en">Add DocTruyen.ai to Chrome. No sign-up, no configuration.</span><span class="vi">Thêm DocTruyen.ai vào Chrome. Không cần đăng ký, không cần cấu hình.</span></p>
+      </div>
+      <div class="step">
+        <h3><span class="en">Open a chapter</span><span class="vi">Mở một chương truyện</span></h3>
+        <p><span class="en">Go to any story site you already read. A small control bar appears in the corner of the page.</span><span class="vi">Vào bất kỳ trang truyện nào bạn đang đọc. Thanh điều khiển nhỏ tự hiện ở góc màn hình.</span></p>
+      </div>
+      <div class="step">
+        <h3><span class="en">Press ▶ and listen</span><span class="vi">Bấm ▶ và nghe</span></h3>
+        <p><span class="en">The AI voice reads from the top of the chapter. When it ends, the extension opens the next chapter and keeps reading.</span><span class="vi">Giọng AI đọc từ đầu chương. Hết chương, tiện ích tự mở chương kế tiếp và đọc tiếp.</span></p>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="features" class="alt">
   <div class="wrap">
-    <h2>Tính năng</h2>
-    <p class="sec-en">Features</p>
+    <h2><span class="en">Features</span><span class="vi">Tính năng</span></h2>
+    <p class="sec-sub"><span class="en">Built for long reading sessions.</span><span class="vi">Thiết kế cho những buổi nghe dài.</span></p>
     <div class="grid">
-      <div class="card"><div class="ic">🌐</div><h3>Mọi trang truyện</h3><p>Tự nhận diện nội dung chương trên hầu hết trang truyện tiếng Việt. Nếu trang lạ, chỉ cần bấm nút "chương tiếp" một lần để tiện ích ghi nhớ.</p></div>
-      <div class="card"><div class="ic">🎙️</div><h3>Giọng AI Google Neural2</h3><p>Giọng đọc tiếng Việt tự nhiên, phát âm chuẩn dấu, không ngắt quãng giữa các đoạn. Có giọng nam và nữ.</p></div>
-      <div class="card"><div class="ic">⏭️</div><h3>Tự chuyển chương</h3><p>Đọc xong chương là tự động sang chương tiếp theo và đọc tiếp. Nghe cả đêm không cần chạm.</p></div>
-      <div class="card"><div class="ic">🔖</div><h3>Nhớ vị trí đọc</h3><p>Dừng ở đâu, lần sau mở tiện ích bấm "Tiếp tục nghe" là quay lại đúng chỗ đó.</p></div>
-      <div class="card"><div class="ic">😴</div><h3>Hẹn giờ ngủ</h3><p>Tự dừng sau 15, 30 hoặc 60 phút. Ngủ quên cũng không mất chương.</p></div>
-      <div class="card"><div class="ic">⚡</div><h3>Tốc độ &amp; phím tắt</h3><p>Chỉnh tốc độ 0.5×–2×, kéo thanh tiến trình để tua, phím tắt Alt+Shift+P để phát/dừng.</p></div>
+      <div class="card"><div class="ic">🌐</div>
+        <h3><span class="en">Any story site</span><span class="vi">Mọi trang truyện</span></h3>
+        <p><span class="en">Automatically detects the chapter text on most Vietnamese story sites. On an unknown site, click its "next chapter" button once and the extension remembers it.</span><span class="vi">Tự nhận diện nội dung chương trên hầu hết trang truyện tiếng Việt. Nếu trang lạ, chỉ cần bấm nút "chương tiếp" một lần để tiện ích ghi nhớ.</span></p></div>
+      <div class="card"><div class="ic">🎙️</div>
+        <h3><span class="en">Google Neural2 AI voice</span><span class="vi">Giọng AI Google Neural2</span></h3>
+        <p><span class="en">Natural Vietnamese speech with correct tones, no gaps between paragraphs. Male and female voices.</span><span class="vi">Giọng đọc tiếng Việt tự nhiên, phát âm chuẩn dấu, không ngắt quãng giữa các đoạn. Có giọng nam và nữ.</span></p></div>
+      <div class="card"><div class="ic">⏭️</div>
+        <h3><span class="en">Auto-advance chapters</span><span class="vi">Tự chuyển chương</span></h3>
+        <p><span class="en">When a chapter ends it opens the next one and keeps reading. Listen all night without touching anything.</span><span class="vi">Đọc xong chương là tự động sang chương tiếp theo và đọc tiếp. Nghe cả đêm không cần chạm.</span></p></div>
+      <div class="card"><div class="ic">🔖</div>
+        <h3><span class="en">Remembers your place</span><span class="vi">Nhớ vị trí đọc</span></h3>
+        <p><span class="en">Stop anywhere. Next time, open the extension and press "Resume reading" to pick up exactly where you left off.</span><span class="vi">Dừng ở đâu, lần sau mở tiện ích bấm "Tiếp tục nghe" là quay lại đúng chỗ đó.</span></p></div>
+      <div class="card"><div class="ic">😴</div>
+        <h3><span class="en">Sleep timer</span><span class="vi">Hẹn giờ ngủ</span></h3>
+        <p><span class="en">Stops automatically after 15, 30 or 60 minutes. Fall asleep without losing your place.</span><span class="vi">Tự dừng sau 15, 30 hoặc 60 phút. Ngủ quên cũng không mất chương.</span></p></div>
+      <div class="card"><div class="ic">⚡</div>
+        <h3><span class="en">Speed &amp; shortcuts</span><span class="vi">Tốc độ &amp; phím tắt</span></h3>
+        <p><span class="en">Speed from 0.5× to 2×, drag the progress bar to seek, Alt+Shift+P to play or pause.</span><span class="vi">Chỉnh tốc độ 0.5×–2×, kéo thanh tiến trình để tua, phím tắt Alt+Shift+P để phát/dừng.</span></p></div>
     </div>
   </div>
 </section>
@@ -165,74 +203,82 @@
 <section id="demo">
   <div class="wrap">
     <h2>Demo</h2>
-    <p class="sec-en">See it in action</p>
-    <div class="video" id="videoBox">
+    <p class="sec-sub"><span class="en">See and hear it in action.</span><span class="vi">Xem và nghe thử.</span></p>
+    <div class="video">
       <video controls preload="metadata" poster="demo-poster.jpg" src="demo.mp4">
-        Trình duyệt của bạn không hỗ trợ video. <a href="demo.mp4">Tải video demo</a>.
+        <span class="en">Your browser does not support video. <a href="demo.mp4">Download the demo</a>.</span>
+        <span class="vi">Trình duyệt của bạn không hỗ trợ video. <a href="demo.mp4">Tải video demo</a>.</span>
       </video>
     </div>
-    <p class="sec-en" style="margin-top:12px">2 phút: bấm ▶ trên một chương ở storya.click, tua giữa chương, thu gọn thanh điều khiển, hết chương tự chuyển sang chương 2 và đọc tiếp — có tiếng.</p>
-    <img class="shot" src="screenshot-reading.png" alt="DocTruyen.ai đang đọc một chương truyện trên truyencom.com, thanh điều khiển ở góc dưới bên phải">
+    <p class="caption">
+      <span class="en">2 minutes, with sound: press ▶ on a chapter at storya.click, seek within the chapter, collapse the control bar, and watch it auto-advance to chapter 2 and keep reading.</span>
+      <span class="vi">2 phút, có tiếng: bấm ▶ trên một chương ở storya.click, tua giữa chương, thu gọn thanh điều khiển, hết chương tự chuyển sang chương 2 và đọc tiếp.</span>
+    </p>
+    <img class="shot" src="screenshot-reading.png" alt="DocTruyen.ai reading a chapter on truyencom.com with the control bar in the bottom-right corner">
   </div>
 </section>
 
 <section id="pricing" class="alt">
   <div class="wrap">
-    <h2>Bảng giá</h2>
-    <p class="sec-en">Pricing — simple, cancel anytime</p>
+    <h2><span class="en">Pricing</span><span class="vi">Bảng giá</span></h2>
+    <p class="sec-sub"><span class="en">Simple plans, cancel anytime.</span><span class="vi">Đơn giản, hủy bất kỳ lúc nào.</span></p>
     <div class="plans">
       <div class="plan">
-        <h3>Miễn phí</h3>
+        <h3><span class="en">Free</span><span class="vi">Miễn phí</span></h3>
         <div class="price">$0</div>
-        <div class="alt-price">Mãi mãi</div>
+        <div class="alt-price"><span class="en">Forever</span><span class="vi">Mãi mãi</span></div>
         <ul>
-          <li>Đọc trên mọi trang truyện</li>
-          <li>Tự chuyển chương</li>
-          <li>1 chương/ngày bằng giọng AI Neural2</li>
-          <li>Các chương còn lại dùng giọng trình duyệt (Web Speech)</li>
-          <li>Chỉnh tốc độ, tua, phím tắt</li>
-          <li class="no">Chọn giọng nam/nữ</li>
-          <li class="no">Hẹn giờ ngủ, lịch sử đọc</li>
+          <li><span class="en">Works on any story site</span><span class="vi">Đọc trên mọi trang truyện</span></li>
+          <li><span class="en">Auto-advance chapters</span><span class="vi">Tự chuyển chương</span></li>
+          <li><span class="en">1 chapter per day with the Neural2 AI voice</span><span class="vi">1 chương/ngày bằng giọng AI Neural2</span></li>
+          <li><span class="en">Remaining chapters use the browser's built-in voice (Web Speech)</span><span class="vi">Các chương còn lại dùng giọng trình duyệt (Web Speech)</span></li>
+          <li><span class="en">Speed control, seeking, keyboard shortcuts</span><span class="vi">Chỉnh tốc độ, tua, phím tắt</span></li>
+          <li class="no"><span class="en">Choice of male/female voices</span><span class="vi">Chọn giọng nam/nữ</span></li>
+          <li class="no"><span class="en">Sleep timer, reading history</span><span class="vi">Hẹn giờ ngủ, lịch sử đọc</span></li>
         </ul>
-        <a class="btn secondary" href="#install">Cài đặt miễn phí</a>
+        <a class="btn secondary" href="#install"><span class="en">Install free</span><span class="vi">Cài đặt miễn phí</span></a>
       </div>
       <div class="plan pro">
-        <span class="tag">PHỔ BIẾN</span>
+        <span class="tag"><span class="en">POPULAR</span><span class="vi">PHỔ BIẾN</span></span>
         <h3>⭐ Pro</h3>
-        <div class="price">$6.99 <small>/ tháng</small></div>
-        <div class="alt-price">hoặc <strong>$55.99 / năm</strong> (tiết kiệm 33%) · dùng thử 7 ngày miễn phí</div>
+        <div class="price">$6.99 <small><span class="en">/ month</span><span class="vi">/ tháng</span></small></div>
+        <div class="alt-price">
+          <span class="en">or <strong>$55.99 / year</strong> (save 33%) · 7-day free trial</span>
+          <span class="vi">hoặc <strong>$55.99 / năm</strong> (tiết kiệm 33%) · dùng thử 7 ngày miễn phí</span>
+        </div>
         <ul>
-          <li>Tất cả tính năng gói Miễn phí</li>
-          <li>Giọng AI Neural2 cho <strong>mọi chương</strong>, không giới hạn</li>
-          <li>4 giọng đọc: nữ &amp; nam, Neural2 &amp; Wavenet</li>
-          <li>Hẹn giờ ngủ 15 / 30 / 60 phút</li>
-          <li>Lịch sử chương đã nghe, đồng bộ bookmark</li>
-          <li>Dùng trên tối đa 3 trình duyệt</li>
+          <li><span class="en">Everything in Free</span><span class="vi">Tất cả tính năng gói Miễn phí</span></li>
+          <li><span class="en">Neural2 AI voice for <strong>every chapter</strong>, unlimited</span><span class="vi">Giọng AI Neural2 cho <strong>mọi chương</strong>, không giới hạn</span></li>
+          <li><span class="en">4 voices: female &amp; male, Neural2 &amp; Wavenet</span><span class="vi">4 giọng đọc: nữ &amp; nam, Neural2 &amp; Wavenet</span></li>
+          <li><span class="en">Sleep timer: 15 / 30 / 60 minutes</span><span class="vi">Hẹn giờ ngủ 15 / 30 / 60 phút</span></li>
+          <li><span class="en">Reading history, bookmark sync</span><span class="vi">Lịch sử chương đã nghe, đồng bộ bookmark</span></li>
+          <li><span class="en">Use on up to 3 browsers</span><span class="vi">Dùng trên tối đa 3 trình duyệt</span></li>
         </ul>
-        <a class="btn primary" href="https://doctruyen.lemonsqueezy.com/buy/1668120">Dùng thử Pro — $6.99/tháng</a>
-        <a class="btn secondary" style="margin-top:8px" href="https://doctruyen.lemonsqueezy.com/buy/1668136">Gói năm $55.99</a>
+        <a class="btn primary" href="https://doctruyen.lemonsqueezy.com/buy/1668120"><span class="en">Try Pro — $6.99/month</span><span class="vi">Dùng thử Pro — $6.99/tháng</span></a>
+        <a class="btn secondary" style="margin-top:8px" href="https://doctruyen.lemonsqueezy.com/buy/1668136"><span class="en">Yearly plan $55.99</span><span class="vi">Gói năm $55.99</span></a>
       </div>
     </div>
-    <p class="fine">Thanh toán qua Lemon Squeezy (thẻ quốc tế, PayPal). License key được gửi tự động qua email ngay sau khi thanh toán — dán vào tiện ích là kích hoạt Pro tức thì. Hủy bất kỳ lúc nào tại <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com</a>.</p>
-    <p class="fine en">Payments are processed by Lemon Squeezy. Your license key is emailed automatically right after checkout and activates Pro instantly inside the extension — no manual steps. Cancel anytime.</p>
+    <p class="fine">
+      <span class="en">Payments are processed by Lemon Squeezy (cards, PayPal). Your license key is emailed automatically right after checkout; paste it into the extension to activate Pro instantly. No manual steps. Cancel anytime at <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com</a>.</span>
+      <span class="vi">Thanh toán qua Lemon Squeezy (thẻ quốc tế, PayPal). License key được gửi tự động qua email ngay sau khi thanh toán — dán vào tiện ích là kích hoạt Pro tức thì. Hủy bất kỳ lúc nào tại <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com</a>.</span>
+    </p>
   </div>
 </section>
 
 <section id="install">
   <div class="wrap">
-    <h2>Cài đặt</h2>
-    <p class="sec-en">Install</p>
+    <h2><span class="en">Install</span><span class="vi">Cài đặt</span></h2>
+    <p class="sec-sub"><span class="en">Chrome and other Chromium browsers.</span><span class="vi">Chrome và các trình duyệt nhân Chromium.</span></p>
     <div class="grid">
       <div class="card">
         <div class="ic">🧩</div>
         <h3>Chrome Web Store</h3>
-        <p>Phiên bản 1.0 đang được Google xét duyệt trên Chrome Web Store. Liên kết cài đặt sẽ được cập nhật tại đây ngay khi được duyệt.</p>
-        <p class="en" style="margin-top:6px">Version 1.0 is under review on the Chrome Web Store; the install link will appear here once approved.</p>
+        <p><span class="en">Version 1.0 is under review on the Chrome Web Store. The install link will appear here as soon as it is approved.</span><span class="vi">Phiên bản 1.0 đang được Google xét duyệt trên Chrome Web Store. Liên kết cài đặt sẽ được cập nhật tại đây ngay khi được duyệt.</span></p>
       </div>
       <div class="card">
         <div class="ic">✉️</div>
-        <h3>Muốn dùng thử sớm?</h3>
-        <p>Gửi email tới <a href="mailto:phamquangquocviet@gmail.com">phamquangquocviet@gmail.com</a>, chúng tôi sẽ gửi bản cài đặt thủ công kèm hướng dẫn.</p>
+        <h3><span class="en">Want early access?</span><span class="vi">Muốn dùng thử sớm?</span></h3>
+        <p><span class="en">Email <a href="mailto:phamquangquocviet@gmail.com">phamquangquocviet@gmail.com</a> and we'll send a manual install package with instructions.</span><span class="vi">Gửi email tới <a href="mailto:phamquangquocviet@gmail.com">phamquangquocviet@gmail.com</a>, chúng tôi sẽ gửi bản cài đặt thủ công kèm hướng dẫn.</span></p>
       </div>
     </div>
   </div>
@@ -240,27 +286,80 @@
 
 <section id="faq" class="alt">
   <div class="wrap">
-    <h2>Câu hỏi thường gặp</h2>
-    <p class="sec-en">FAQ</p>
-    <details><summary>Tiện ích có hoạt động trên trang truyện tôi hay đọc không?</summary><p>Hầu hết là có. DocTruyen.ai nhận diện nội dung chương bằng nhiều quy tắc chung, đã kiểm thử trên truyenfull, truyencom, storya và các trang dùng theme WordPress phổ biến. Với trang chưa hỗ trợ tự động, bạn bấm vào biểu tượng ✗ trên thanh điều khiển rồi bấm nút "chương tiếp" của trang một lần — tiện ích sẽ ghi nhớ cho những lần sau.</p></details>
-      <details><summary>Sau khi mua Pro tôi nhận được gì, và khi nào?</summary><p>Ngay sau khi thanh toán, Lemon Squeezy tự động gửi email chứa license key. Mở tiện ích, dán key vào ô "License Key" và bấm Kích hoạt. Toàn bộ quá trình là tự động, không có bước xử lý thủ công.</p></details>
-    <details><summary>Gói Pro dùng được trên mấy máy?</summary><p>Một license key kích hoạt được trên tối đa 3 trình duyệt.</p></details>
-    <details><summary>Hủy đăng ký thế nào?</summary><p>Vào <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com/my-orders</a> (liên kết cũng có trong tiện ích), chọn đăng ký và bấm hủy. Bạn vẫn dùng Pro đến hết kỳ đã thanh toán.</p></details>
-    <details><summary>Dữ liệu của tôi có bị thu thập không?</summary><p>Không. Tiện ích không có tài khoản, không thu thập tên, email hay lịch sử duyệt web. Văn bản chương chỉ được gửi tới máy chủ để chuyển thành giọng đọc và không được lưu. Chi tiết tại <a href="https://vietphamqq.github.io/doctruyen-pp/">Chính sách quyền riêng tư</a>.</p></details>
-    <details><summary>Giọng đọc miễn phí và Pro khác nhau thế nào?</summary><p>Gói miễn phí được 1 chương mỗi ngày bằng giọng AI Google Neural2; các chương sau dùng giọng có sẵn của trình duyệt (chất lượng thấp hơn, tuỳ hệ điều hành). Gói Pro dùng giọng Neural2 cho mọi chương, không giới hạn, và cho phép chọn giọng nam hoặc nữ.</p></details>
+    <h2>FAQ</h2>
+    <p class="sec-sub"><span class="en">Common questions.</span><span class="vi">Câu hỏi thường gặp.</span></p>
+    <details>
+      <summary><span class="en">Does it work on the story site I read?</span><span class="vi">Tiện ích có hoạt động trên trang truyện tôi hay đọc không?</span></summary>
+      <p><span class="en">Most likely. DocTruyen.ai detects chapter text with general rules and has been tested on truyenfull, truyencom, storya and common WordPress story themes. On a site it can't handle automatically, click the ✗ icon on the control bar, then click the site's own "next chapter" button once; the extension remembers it for next time.</span><span class="vi">Hầu hết là có. DocTruyen.ai nhận diện nội dung chương bằng nhiều quy tắc chung, đã kiểm thử trên truyenfull, truyencom, storya và các trang dùng theme WordPress phổ biến. Với trang chưa hỗ trợ tự động, bạn bấm vào biểu tượng ✗ trên thanh điều khiển rồi bấm nút "chương tiếp" của trang một lần — tiện ích sẽ ghi nhớ cho những lần sau.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">What do I get after buying Pro, and when?</span><span class="vi">Sau khi mua Pro tôi nhận được gì, và khi nào?</span></summary>
+      <p><span class="en">Right after checkout, Lemon Squeezy automatically emails you a license key. Open the extension, paste the key into "License Key" and press Activate. The whole process is automated; nothing is handled manually.</span><span class="vi">Ngay sau khi thanh toán, Lemon Squeezy tự động gửi email chứa license key. Mở tiện ích, dán key vào ô "License Key" và bấm Kích hoạt. Toàn bộ quá trình là tự động, không có bước xử lý thủ công.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">How many devices can I use Pro on?</span><span class="vi">Gói Pro dùng được trên mấy máy?</span></summary>
+      <p><span class="en">One license key activates on up to 3 browsers.</span><span class="vi">Một license key kích hoạt được trên tối đa 3 trình duyệt.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">How do I cancel?</span><span class="vi">Hủy đăng ký thế nào?</span></summary>
+      <p><span class="en">Go to <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com/my-orders</a> (the link is also in the extension), pick the subscription and cancel. Pro stays active until the end of the paid period.</span><span class="vi">Vào <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com/my-orders</a> (liên kết cũng có trong tiện ích), chọn đăng ký và bấm hủy. Bạn vẫn dùng Pro đến hết kỳ đã thanh toán.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">Is my data collected?</span><span class="vi">Dữ liệu của tôi có bị thu thập không?</span></summary>
+      <p><span class="en">No. There are no accounts and we don't collect names, emails or browsing history. Chapter text is sent to our server only to be converted to speech and is not stored. See the <a href="https://vietphamqq.github.io/doctruyen-pp/">Privacy Policy</a>.</span><span class="vi">Không. Tiện ích không có tài khoản, không thu thập tên, email hay lịch sử duyệt web. Văn bản chương chỉ được gửi tới máy chủ để chuyển thành giọng đọc và không được lưu. Chi tiết tại <a href="https://vietphamqq.github.io/doctruyen-pp/">Chính sách quyền riêng tư</a>.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">What's the difference between the free and Pro voices?</span><span class="vi">Giọng đọc miễn phí và Pro khác nhau thế nào?</span></summary>
+      <p><span class="en">Free gets one chapter per day with the Google Neural2 AI voice; later chapters use the browser's built-in voice, which is lower quality and depends on your operating system. Pro uses the Neural2 voice for every chapter, unlimited, and lets you pick a male or female voice.</span><span class="vi">Gói miễn phí được 1 chương mỗi ngày bằng giọng AI Google Neural2; các chương sau dùng giọng có sẵn của trình duyệt (chất lượng thấp hơn, tuỳ hệ điều hành). Gói Pro dùng giọng Neural2 cho mọi chương, không giới hạn, và cho phép chọn giọng nam hoặc nữ.</span></p>
+    </details>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div>© 2026 DocTruyen.ai · Phát triển bởi William Pham (Phạm Quang Quốc Việt)</div>
+    <div>© 2026 DocTruyen.ai · <span class="en">Built by</span><span class="vi">Phát triển bởi</span> William Pham (Phạm Quang Quốc Việt)</div>
     <div>
       <a href="mailto:phamquangquocviet@gmail.com">phamquangquocviet@gmail.com</a> ·
-      <a href="https://vietphamqq.github.io/doctruyen-pp/">Chính sách quyền riêng tư</a> ·
+      <a href="https://vietphamqq.github.io/doctruyen-pp/"><span class="en">Privacy Policy</span><span class="vi">Chính sách quyền riêng tư</span></a> ·
       <a href="https://github.com/vietphamqq">GitHub</a>
     </div>
   </div>
 </footer>
 
+<script>
+(function () {
+  var META = {
+    en: {
+      title: 'DocTruyen.ai — Listen to Vietnamese web novels with an AI voice',
+      desc:  'DocTruyen.ai is a Chrome extension that reads Vietnamese web novels aloud with a natural AI voice and auto-advances chapters on any story site. Free, with Pro from $6.99/month.'
+    },
+    vi: {
+      title: 'DocTruyen.ai — Nghe truyện bằng giọng đọc AI trên Chrome',
+      desc:  'DocTruyen.ai là tiện ích Chrome đọc truyện chữ tiếng Việt thành giọng nói AI, tự động chuyển chương, hoạt động trên mọi trang truyện. Miễn phí, nâng cấp Pro $6.99/tháng.'
+    }
+  };
+  function setLang(lang, persist) {
+    if (!META[lang]) lang = 'en';
+    var html = document.documentElement;
+    html.setAttribute('data-lang', lang);
+    html.setAttribute('lang', lang);
+    document.title = META[lang].title;
+    var d = document.querySelector('meta[name="description"]');
+    if (d) d.setAttribute('content', META[lang].desc);
+    document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-set-lang') === lang);
+    });
+    if (persist) { try { localStorage.setItem('doctruyen_lang', lang); } catch (e) {} }
+  }
+  // Priority: ?lang= in the URL → remembered choice → English (default)
+  var fromUrl = new URLSearchParams(location.search).get('lang');
+  var saved = null;
+  try { saved = localStorage.getItem('doctruyen_lang'); } catch (e) {}
+  setLang(fromUrl || saved || 'en', !!fromUrl);
+  document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang'), true); });
+  });
+})();
+</script>
 </body>
 </html>

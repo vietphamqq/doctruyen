@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi" data-lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>DocTruyen.ai — Kích hoạt Pro</title>
+  <link rel="icon" href="icon128.png" type="image/png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: #fafafa; color: #222; line-height: 1.6;
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: #fff; border: 1px solid #e8e8e8; border-radius: 16px; padding: 36px 32px; max-width: 520px; width: 100%; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,.06); }
+    .card img { width: 64px; height: 64px; margin-bottom: 12px; }
+    h1 { font-size: 22px; margin-bottom: 8px; color: #1a1a2e; }
+    p { color: #444; font-size: 15px; }
+    .en { color: #888; font-size: 13px; font-style: italic; margin-top: 6px; }
+    .state { display: none; }
+    .state.on { display: block; }
+    .spinner { width: 28px; height: 28px; border: 3px solid #e0e0e0; border-top-color: #4caf50; border-radius: 50%; margin: 14px auto; animation: spin .9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ok { color: #2e7d32; font-size: 44px; line-height: 1; margin-bottom: 8px; }
+    .key { font-family: ui-monospace, Menlo, monospace; font-size: 15px; background: #f4f4f4; border: 1px dashed #ccc; border-radius: 8px;
+           padding: 10px 12px; margin: 14px 0 8px; word-break: break-all; user-select: all; }
+    .btn { display: inline-block; margin-top: 14px; padding: 11px 22px; border-radius: 10px; background: #4caf50; color: #fff; font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-size: 15px; }
+    .btn.secondary { background: #eee; color: #333; margin-left: 6px; }
+    ol { text-align: left; margin: 10px 0 0 22px; font-size: 14.5px; }
+    .small { font-size: 13px; color: #777; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="icon128.png" alt="">
+
+    <div class="state on" id="working">
+      <h1>Đang kích hoạt Pro…</h1>
+      <div class="spinner"></div>
+      <p>Tiện ích DocTruyen.ai đang nhận key của bạn.</p>
+      <p class="en">Activating Pro in the extension…</p>
+    </div>
+
+    <div class="state" id="ok">
+      <div class="ok">✓</div>
+      <h1>Pro đã được kích hoạt!</h1>
+      <p>Mở một chương truyện và bấm ▶ — giọng AI đã bật cho mọi chương.</p>
+      <p class="en">Pro is active. Open any chapter and press ▶.</p>
+      <a class="btn" href="https://storya.click/truyen/chang-re-manh-nhat-lich-su/chuong-1">Nghe thử một chương</a>
+    </div>
+
+    <div class="state" id="manual">
+      <h1 id="manualTitle">Cài tiện ích để kích hoạt</h1>
+      <p id="manualText">Chưa thấy tiện ích DocTruyen.ai trên trình duyệt này. Cài từ Chrome Web Store, rồi mở lại trang này hoặc dán key vào tiện ích:</p>
+      <p class="en" id="manualEn">The extension isn't installed in this browser. Install it, then reopen this page or paste the key into the extension.</p>
+      <div class="key" id="keyBox">—</div>
+      <button class="btn secondary" id="copyBtn" type="button">Sao chép key</button>
+      <a class="btn" href="https://chromewebstore.google.com/detail/doctruyenai/nnihfpenjmleapdihopfdgccehnpbpnc">Cài DocTruyen.ai</a>
+      <ol>
+        <li>Bấm biểu tượng DocTruyen.ai trên thanh công cụ Chrome</li>
+        <li>Dán key vào ô "License Key" và bấm Activate</li>
+      </ol>
+      <p class="small">Key này cũng có trong email xác nhận từ Lemon Squeezy.</p>
+    </div>
+
+    <div class="state" id="nokey">
+      <h1>Thiếu key kích hoạt</h1>
+      <p>Trang này cần được mở từ liên kết sau khi thanh toán. Bạn có thể dán key từ email vào tiện ích để kích hoạt thủ công.</p>
+      <p class="en">No key in the link. Paste the key from your email into the extension instead.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search)
+      var key = (params.get('key') || '').trim()
+      var show = function (id) {
+        document.querySelectorAll('.state').forEach(function (el) { el.classList.remove('on') })
+        document.getElementById(id).classList.add('on')
+      }
+      document.getElementById('keyBox').textContent = key || '—'
+      document.getElementById('copyBtn').addEventListener('click', function () {
+        navigator.clipboard.writeText(key).then(function () { document.getElementById('copyBtn').textContent = 'Đã sao chép ✓' })
+      })
+      if (!key) { show('nokey'); return }
+
+      // The extension's content script reports through attributes on <html>.
+      var done = false
+      var apply = function () {
+        var st = document.documentElement.getAttribute('data-doctruyen-activation')
+        var detail = document.documentElement.getAttribute('data-doctruyen-detail') || ''
+        if (!st || st === 'working') return
+        done = true
+        if (st === 'ok') { show('ok') }
+        else {
+          if (st === 'failed' && detail === 'activation_limit') {
+            document.getElementById('manualTitle').textContent = 'Key đã dùng trên 3 trình duyệt'
+            document.getElementById('manualText').textContent = 'Gỡ kích hoạt một thiết bị tại app.lemonsqueezy.com/my-orders rồi mở lại trang này.'
+            document.getElementById('manualEn').textContent = 'This key is active on 3 browsers already. Deactivate one at app.lemonsqueezy.com/my-orders, then reload.'
+          } else if (st === 'failed') {
+            document.getElementById('manualTitle').textContent = 'Không kích hoạt được key'
+            document.getElementById('manualText').textContent = 'Key chưa hợp lệ hoặc chưa được ghi nhận. Thử lại sau vài phút, hoặc dán key vào tiện ích:'
+            document.getElementById('manualEn').textContent = 'The key was not accepted yet. Try again in a few minutes or paste it into the extension.'
+          }
+          show('manual')
+        }
+        // Keep the key out of the address bar once it has been handed over
+        try { history.replaceState(null, '', location.pathname) } catch (e) {}
+      }
+      new MutationObserver(apply).observe(document.documentElement, { attributes: true, attributeFilter: ['data-doctruyen-activation', 'data-doctruyen-detail'] })
+      apply()
+      setTimeout(function () { if (!done) show('manual') }, 5000)   // no extension answered
+    })()
+  </script>
+</body>
+</html>

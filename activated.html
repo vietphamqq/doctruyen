@@ -73,6 +73,7 @@
     (function () {
       var params = new URLSearchParams(location.search)
       var key = (params.get('key') || '').trim()
+      if (/^\[.*\]$/.test(key)) key = ''   // placeholder came through unsubstituted → manual path
       var show = function (id) {
         document.querySelectorAll('.state').forEach(function (el) { el.classList.remove('on') })
         document.getElementById(id).classList.add('on')
